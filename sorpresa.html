@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Sorpresa de Amor</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #ffdde1;
+      background: linear-gradient(to right, #ee9ca7, #ffdde1);
+      overflow: hidden;
+      font-family: 'Arial', sans-serif;
+      text-align: center;
+    }
+    h1 {
+      color: #fff;
+      font-size: 1.5em;
+      max-width: 80%;
+      z-index: 2;
+      position: relative;
+    }
+    .heart {
+      position: absolute;
+      top: -10vh;
+      color: #ff3366;
+      font-size: 24px;
+      animation: fall linear infinite;
+    }
+    @keyframes fall {
+      to {
+        transform: translateY(110vh);
+        opacity: 0;
+      }
+    }
+    .center-heart {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 3em;
+      color: #fff;
+      text-shadow: 2px 2px 8px #ff3366;
+    }
+    .names {
+      font-size: 1.2em;
+      margin-top: 10px;
+      color: #fff;
+      text-shadow: 1px 1px 4px #ff3366;
+    }
+  </style>
+</head>
+<body>
+  <h1>Bebeshita, sé que hoy es un día cualquiera, pero contigo nada se siente normal, nada momento a tu lado es especial, y me encanta la forma en la que llenas mis días de alegría, solo quería recordarte lo mucho que te amo muchisimo, ojitos lindos, y lo feliz que soy de tenerte en mi vida. 💖</h1>
+  <div class="center-heart">❤
+    <div class="names">Joselyn ❤ Alex</div>
+  </div>
+  <script>
+    function createHeart() {
+      const heart = document.createElement('div');
+      heart.classList.add('heart');
+      heart.textContent = '❤';
+      heart.style.left = Math.random() * 100 + 'vw';
+      heart.style.animationDuration = (Math.random() * 3 + 2) + 's';
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 5000);
+    }
+    setInterval(createHeart, 200);
+  </script>
+</body>
+</html>
