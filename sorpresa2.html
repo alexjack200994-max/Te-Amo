@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Sorpresa: Joselyn ❤ Alex</title>
+  <style>
+    :root{
+      --pink1:#ff6b93; --bg1:#ffdde1; --bg2:#ee9ca7;
+      --card-bg: rgba(255,255,255,0.06);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0}
+    body{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:20px;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+      background: linear-gradient(120deg,var(--bg2),var(--bg1));
+      color:#fff;
+      overflow:hidden;
+    }
+
+    .card{
+      width:100%;
+      max-width:980px;
+      text-align:center;
+      padding:28px;
+      border-radius:18px;
+      backdrop-filter: blur(6px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+      position:relative;
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+    }
+
+    /* NOMBRE PRINCIPAL (arriba) */
+    .name{
+      font-size: calc(28px + 6vw);
+      margin:0;
+      font-weight:800;
+      letter-spacing:-1px;
+      text-shadow: 0 6px 18px rgba(255,50,110,0.18);
+      opacity:0;
+      transform:translateY(22px);
+      animation:fadeInUp 600ms ease-out forwards;
+    }
+    @keyframes fadeInUp{to{opacity:1;transform:translateY(0)}}
+
+    /* MENSAJE (typing) - asegura espacio para que no cubra el corazón */
+    .message{
+      margin-top:14px;
+      margin-bottom:24px;
+      min-height:84px;
+      max-width:900px;
+      margin-left:auto;
+      margin-right:auto;
+      font-size: calc(13px + 0.5vw);
+      line-height:1.4;
+      color: rgba(255,255,255,0.95);
+      position:relative;
+      z-index:2; /* encima de efectos visuales */
+    }
+    .typing{ white-space:pre-wrap; border-right:2px solid rgba(255,255,255,0.6); padding-right:4px; display:inline-block; }
+
+    /* CAJA DEL CORAZON: ahora está separada claramente */
+    .heart-area{
+      margin-top:18px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:18px;
+      padding:14px;
+      border-radius:14px;
+      background: linear-gradient(90deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+      box-shadow: inset 0 -6px 18px rgba(255,50,110,0.04);
+      position:relative;
+      z-index:3; /* siempre por encima de la escritura/animaciones */
+    }
+    .heart-symbol{ font-size:36px; display:block; margin-right:8px; filter:drop-shadow(0 6px 12px rgba(255,50,110,0.12)); }
+    .names{
+      font-weight:800;
+      font-size:20px;
+      color: #fff;
+      letter-spacing:0.3px;
+      text-shadow: 0 4px 10px rgba(0,0,0,0.18);
+    }
+
+    .btn{
+      margin-top:14px;
+      display:inline-block;
+      background:#fff;
+      color:var(--pink1);
+      border:0;
+      padding:10px 16px;
+      border-radius:999px;
+      font-weight:700;
+      cursor:pointer;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+      transition: transform 160ms ease, box-shadow 160ms ease;
+      position:relative;
+      z-index:4;
+    }
+    .btn:active{ transform: scale(0.98) }
+
+    /* estilos responsivos */
+    @media (max-width:420px){ .name{ font-size:42px } .heart-symbol{ font-size:28px } .names{ font-size:16px } }
+  </style>
+</head>
+<body>
+  <div class="card" role="main" aria-live="polite">
+    <h1 class="name" id="name">Joselyn</h1>
+
+    <div class="message">
+      <span id="typed" class="typing" aria-hidden="false"></span>
+    </div>
+
+    <!-- CORAZON + NOMBRES: esta caja está separada y con z-index alto -->
+    <div class="heart-area" id="heartArea" aria-hidden="false">
+      <div class="heart-symbol">❤</div>
+      <div class="names">Joselyn ❤ Alex</div>
+    </div>
+
+    <div>
+      <button class="btn" id="touchBtn">Tócame</button>
+    </div>
+  </div>
+
+<script>
+  // Mensaje personalizado (el que diste)
+  const message = "Bebeshita, sé que hoy es un día cualquiera, pero contigo nada se siente normal, nada momento a tu lado es especial, y me encanta la forma en la que llenas mis días de alegría, solo quería recordarte lo mucho que te amo muchisimo, ojitos lindos, y lo feliz que soy de tenerte en mi vida. 💖";
+
+  // efecto de escritura
+  const typedEl = document.getElementById('typed');
+  let idx = 0;
+  function type(){
+    if(idx <= message.length){
+      typedEl.textContent = message.slice(0, idx);
+      idx++;
+      setTimeout(type, 22);
+    } else {
+      typedEl.classList.remove('typing');
+    }
+  }
+  setTimeout(type, 700);
+
+  // interacción: burst de corazones desde el botón (la caja de nombres no se mueve ni se oculta)
+  const btn = document.getElementById('touchBtn');
+  btn.addEventListener('click', trigger);
+  btn.addEventListener('touchstart', function(e){ e.preventDefault(); trigger(); });
+
+  function trigger(){
+    const rect = btn.getBoundingClientRect();
+    const cx = rect.left + rect.width/2;
+    const cy = rect.top + rect.height/2;
+    for(let i=0;i<26;i++){
+      createHeart(cx, cy);
+      createConfetti(cx, cy);
+    }
+    btn.animate([{ transform:'scale(1)' },{ transform:'scale(1.06)' },{ transform:'scale(1)'}], { duration: 320 });
+  }
+
+  function createHeart(x,y){
+    const d = document.createElement('div');
+    d.textContent = '❤';
+    d.style.position = 'fixed';
+    d.style.left = x + 'px';
+    d.style.top = y + 'px';
+    d.style.pointerEvents = 'none';
+    d.style.fontSize = (12 + Math.random()*26) + 'px';
+    const colors = ['#ff3366','#ff7ab6','#ffd1e0'];
+    d.style.color = colors[Math.floor(Math.random()*colors.length)];
+    d.style.zIndex = 9999;
+    document.body.appendChild(d);
+    const dx = (Math.random()-0.5) * 380;
+    const dy = - (100 + Math.random()*320);
+    const rot = (Math.random()-0.5) * 720;
+    d.animate([
+      { transform: 'translate(0px,0px) rotate(0deg)', opacity:1 },
+      { transform: `translate(${dx}px, ${dy}px) rotate(${rot}deg)`, opacity:0 }
+    ], { duration: 900 + Math.random()*800, easing: 'cubic-bezier(.2,.8,.2,1)' });
+    setTimeout(()=> d.remove(), 2200);
+  }
+
+  function createConfetti(x,y){
+    const e = document.createElement('div');
+    e.style.position = 'fixed';
+    e.style.left = x + 'px';
+    e.style.top = y + 'px';
+    e.style.width = e.style.height = (6 + Math.random()*8) + 'px';
+    e.style.borderRadius = '2px';
+    const palette = ['#ffd166','#06d6a0','#118ab2','#ef476f'];
+    e.style.background = palette[Math.floor(Math.random()*palette.length)];
+    e.style.zIndex = 9998;
+    e.style.pointerEvents = 'none';
+    document.body.appendChild(e);
+    const dx = (Math.random()-0.5)*600;
+    const dy = 120 + Math.random()*260;
+    const rot = Math.random()*720;
+    e.animate([
+      { transform:'translate(0px,0px) rotate(0deg)', opacity:1 },
+      { transform:`translate(${dx}px, ${dy}px) rotate(${rot}deg)`, opacity:0 }
+    ], { duration: 800 + Math.random()*1200, easing: 'cubic-bezier(.2,.8,.2,1)' });
+    setTimeout(()=> e.remove(), 2000);
+  }
+
+  // Si tocan la caja del corazón también dispara la animación
+  document.getElementById('heartArea').addEventListener('click', function(){ 
+    // animación ligera para la caja
+    this.animate([{ transform:'scale(1)' },{ transform:'scale(1.03)' },{ transform:'scale(1)'}], { duration: 260 });
+  });
+</script>
+</body>
+</html>
